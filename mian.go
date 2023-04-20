@@ -12,15 +12,17 @@ import (
 	"github.com/spf13/viper"
 )
 
+// var task = func() { fmt.Println("Hello world") }
+
 func main() {
 	initConfig()
 	initTimeZone()
 	db := initDB()
 
 	jobRepo := repository.NewJobRepository(db)
-	jobServ := services.NewJobService(jobRepo)
+	jobService := services.NewJobService(jobRepo)
 
-	jobServ.ScheduleAllJob()
+	jobService.ScheduleAllJob()
 }
 
 func initTimeZone() {

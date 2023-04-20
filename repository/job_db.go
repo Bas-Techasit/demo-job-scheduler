@@ -15,8 +15,9 @@ func NewJobRepository(db *sqlx.DB) JobRepository {
 func (r jobRepository) GetAll() ([]Job, error) {
 	jobs := []Job{}
 	query := `
-		SELECT job_id, job_name, cron_exp, create_date 
+		SELECT job_id, job_code, schedule_exp
 		FROM jobs
+		WHERE status = true
 	`
 	err := r.db.Select(&jobs, query)
 	if err != nil {
@@ -25,29 +26,16 @@ func (r jobRepository) GetAll() ([]Job, error) {
 	return jobs, nil
 }
 
-func (r jobRepository) GetById(jobID string) (*Job, error) {
-	return nil, nil
-}
-
-func (r jobRepository) Create(job Job) error {
+func (r jobRepository) GetByPeriodTime(minutes float64, status bool) ([]Job, error) {
+	jobs := []Job{}
 	query := `
-		INSERT INTO jobs(job_id, job_name, cron_exp, create_date) 
-		VALUE (?, ?, ?, ?)
+		SELECT job_id, job_code, schedule_exp
+		FROM jobs
+		WHERE modify_date BETWEEN SUBDATE(NOW(), INTERVAL ? MINUTE) AND NOW() AND status = ?;
 	`
-	r.db.Exec(
-		query,
-		job.JobID,
-		job.JobName,
-		job.CronExp,
-		job.CreateDate,
-	)
-	return nil
-}
-
-func (r jobRepository) Update(Job) (*Job, error) {
-	return nil, nil
-}
-
-func (r jobRepository) Delete(string) error {
-	return nil
+	err := r.db.Select(&jobs, query, minutes, status)
+	if err != nil {
+		return nil, err
+	}
+	return jobs, nil
 }

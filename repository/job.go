@@ -1,18 +1,12 @@
 package repository
 
-import "time"
-
 type Job struct {
-	JobID      string    `db:"job_id"`
-	JobName    string    `db:"job_name"`
-	CronExp    string    `db:"cron_exp"`
-	CreateDate time.Time `db:"create_date"`
+	JobID       int    `db:"job_id"`
+	JobCode     string `db:"job_code"`
+	ScheduleExp string `db:"schedule_exp"`
 }
 
 type JobRepository interface {
 	GetAll() ([]Job, error)
-	GetById(string) (*Job, error)
-	Create(Job) error
-	Update(Job) (*Job, error)
-	Delete(string) error
+	GetByPeriodTime(float64, bool) ([]Job, error)
 }
