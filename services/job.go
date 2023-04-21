@@ -1,7 +1,11 @@
 package services
 
+import (
+	"github.com/go-co-op/gocron"
+)
+
 type JobService interface {
-	ScheduleAllJob()
+	ScheduleAllJob(*gocron.Scheduler, string)
 }
 
 type NewJob struct {

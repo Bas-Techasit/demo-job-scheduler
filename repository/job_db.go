@@ -15,7 +15,7 @@ func NewJobRepository(db *sqlx.DB) JobRepository {
 func (r jobRepository) GetAll() ([]Job, error) {
 	jobs := []Job{}
 	query := `
-		SELECT job_id, job_code, schedule_exp
+		SELECT job_id, job_code, schedule_exp, location
 		FROM jobs
 		WHERE status = true
 	`
