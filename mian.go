@@ -47,8 +47,8 @@ func main() {
 	cron := gocron.NewScheduler(loc)
 	cron.SingletonModeAll()
 
-	jobServiceForDB1.ScheduleAllJob(cron, "check DB1")
-	jobServiceForDB2.ScheduleAllJob(cron, "check DB2")
+	jobServiceForDB1.ScheduleAllJob(cron, "check_DB1")
+	jobServiceForDB2.ScheduleAllJob(cron, "check_DB2")
 
 	cron.StartAsync()
 	fmt.Println(cron.GetAllTags())
